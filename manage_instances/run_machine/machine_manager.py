@@ -1,9 +1,3 @@
-# import time
-# def manage_machine(contract_id, details):
-#     while True:
-#         print(f"Managing machine with contract ID: {contract_id, details}")
-#         time.sleep(30)  # Adjust the sleep duration as needed
-
 import time
 import subprocess
 import sys
@@ -72,34 +66,3 @@ if __name__ == "__main__":
     details = json.loads(sys.argv[2])
     
     manage_machine(contract_id, details)
-
-# def manage_machine(contract_id, details):
-#     start_command = details.get('start_command')
-#     task = details.get('task')
-#     end_command = details.get('end_command')
-    
-#     if start_command:
-#         print(f"Running start command for contract ID {contract_id}")
-#         run_start_command(start_command, contract_id)
-    
-#     if task:
-#         print(f"Running task for contract ID {contract_id}")
-#         run_task(task, contract_id, details)
-    
-#     if end_command:
-#         print(f"Running end command for contract ID {contract_id}")
-#         run_end_command(end_command, contract_id)
-
-#     while True:
-#         print(f"Machine with contract ID: {contract_id} finished all its tasks and is currently idle.")
-#         time.sleep(1)  # Adjust the sleep duration as needed
-
-# if __name__ == "__main__":
-#     if len(sys.argv) != 2:
-#         print("Usage: python3 machine_manager.py <contract_id> <details>")
-#         sys.exit(1)
-    
-#     contract_id = sys.argv[1]
-#     details = json.loads(sys.argv[2])
-    
-#     manage_machine(contract_id, details)
