@@ -1,3 +1,9 @@
+VAST.AI host machine manager
+
+Add your machine ids to my_machines.txt
+Set up the desired commands and tasks in config.yaml
+create optional custom tasks in run_machine/tasks/tasklist
+
 *** Remember to set up ssh keys and vastai api key ***
 
 Create a my_machines.txt file in the root directory. 
@@ -27,3 +33,5 @@ logs and results are available at logs - sorted by the contract ID
 customize tasks through /run_machine/tasks/tasklist   
 - add a file with the tasklist.
 - assign the file through adding the filename to your yaml "task: "
+
+

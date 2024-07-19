@@ -1,0 +1,27 @@
+Command: ls
+Output: config.yaml
+contract_lifecycle
+exit.sh
+fetch_machines
+filter
+logs
+my_machines.txt
+readMe.txt
+run.sh
+run_machine
+
+
+Command: Task jupyter_lab
+Output: Attempting to find task file.
+
+Command: Task jupyter_lab
+Output: Task file /root/_programming/vastai/config_attempt_1/manage_instances/run_machine/tasks/tasklist/jupyter_lab.py initiated.
+
+Command: python3 /root/_programming/vastai/config_attempt_1/manage_instances/run_machine/tasks/tasklist/jupyter_lab.py
+Output: hithere
+
+
+Command: uptime
+Output:  01:43:26 up 1 day,  1:12,  1 user,  load average: 0.06, 0.15, 0.67
+
+
