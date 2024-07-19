@@ -1,6 +1,13 @@
 *** Remember to set up ssh keys and vastai api key ***
 
+Create a my_machines.txt file in the root directory. 
 Add your machine IDs to my_machines.txt
+It should look something like:
+
+39919
+20199
+...
+...
 
 Run: 
 chmod +x run.sh
