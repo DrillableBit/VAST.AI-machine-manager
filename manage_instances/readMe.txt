@@ -9,11 +9,10 @@ Setup ________________________________________________
   Run: 
   chmod +x run.sh
   chmod +x exit.sh
-______________________________________________________
+
 
 Commands  ____________________________________________
 ./run.sh rents all your machines, then executes commands set up in config.yaml
 it then autocancels the contracts after the duration, if a duration is set. 
 
 ./exit.sh can be used if you had to cancel the run.sh script, and want to force exit out of all contracts. 
-______________________________________________________
