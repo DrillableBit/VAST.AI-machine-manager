@@ -1,0 +1,18 @@
+
+  machine_x: 
+    priority: 0
+    image: pytorch/pytorch
+    disk: 32
+    duration: 2000
+ 
+ 
+ 
+    task: jupyter
+    commands: uptime
+    
+    print logs to a .txt for each machine
+
+
+make a stop.sh file
+
+

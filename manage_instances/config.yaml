@@ -1,0 +1,29 @@
+global_filters: 
+  min_cuda: 12.2
+  max_cuda: 12.2
+  min_nv_driver: 535
+  max_nv_driver: 535
+  min_vCPU: 5
+  max_vCPU: 60
+  priority_condition: vCPUs
+
+contracts: 
+  machine_1: 
+    priority: 0
+    image: pytorch/pytorch
+    disk: 32
+    duration: 30
+    task: jupyter_lab
+    start_command: whoami
+    end_command: uptime
+
+  machine_2: 
+    priority: 0
+    image: pytorch/pytorch
+    disk: 32
+    duration: 30
+    task: jupyter_lab
+    start_command: ls
+    end_command: uptime
+
+      
