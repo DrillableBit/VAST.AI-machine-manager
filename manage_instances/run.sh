@@ -4,12 +4,12 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Use the script directory to reference fetch_machines/executable.sh
-"$SCRIPT_DIR/fetch_machines/executable.sh"
 FETCH_DIR=$SCRIPT_DIR/fetch_machines
 FILTER_DIR=$SCRIPT_DIR/filter
 CONTRACT_DIR=$SCRIPT_DIR/contract_lifecycle
 
-
+echo "Scanning my_machines.txt"
+"$SCRIPT_DIR/fetch_machines/executable.sh"
 # Filter machines
 echo "..."
 python3 $FILTER_DIR/filter_machine.py $SCRIPT_DIR/config.yaml $FETCH_DIR/results.json $FILTER_DIR/filtered_results.json
