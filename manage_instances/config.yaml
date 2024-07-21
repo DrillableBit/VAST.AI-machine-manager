@@ -8,22 +8,44 @@ global_filters:
   priority_condition: vCPUs
 
 contracts: 
+  # machine_1: 
+  #   priority: 0
+  #   image: pytorch/pytorch
+  #   disk: 32
+  #   duration: 30
+  #   task: jupyter_lab
   machine_1: 
     priority: 0
     image: pytorch/pytorch
     disk: 32
-    duration: 30
-    task: jupyter_lab
-    start_command: whoami
-    end_command: uptime
-
-  machine_2: 
-    priority: 0
-    image: pytorch/pytorch
-    disk: 32
-    duration: 30
+    duration: 3000
+    tunnel_port: 8888
+    local_port: 8888
     task: jupyter_lab
     start_command: ls
     end_command: uptime
+
+  machine_2: 
+    priority: 1
+    image: pytorch/pytorch
+    disk: 32
+    duration: 3000
+    tunnel_port: 8888
+    local_port: 8888
+    task: jupyter_lab
+    start_command: ls
+    end_command: uptime      
+
+
+  # machine_2: 
+  #   priority: 0
+  #   image: pytorch/pytorch
+  #   disk: 32
+  #   duration: 3000
+  #   tunnel_port: 8889
+  #   local_port: 8889
+  #   task: jupyter_lab
+    # start_command: ls
+    # end_command: uptime
 
       

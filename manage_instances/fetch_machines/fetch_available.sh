@@ -63,7 +63,7 @@ search_machine_id_in_vastai() {
 
         # Set add_comma to true after the first entry
         add_comma=true
-        echo Machine $machine_id loaded.
+        echo $machine_id is available.
     else
         echo "No result found for machine_id $machine_id."
     fi
@@ -84,7 +84,6 @@ echo "[" > "$json_file"
 # Read each machine_id from the file and call the function
 add_comma=false
 while IFS= read -r machine_id; do
-    echo "..."
     search_machine_id_in_vastai "$machine_id" "$json_file" $add_comma
     add_comma=true
 done < "$machine_file"
