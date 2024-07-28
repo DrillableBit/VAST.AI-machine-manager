@@ -1,3 +1,5 @@
+
+
 global_filters: 
   min_cuda: 12.2
   max_cuda: 12.2
@@ -8,44 +10,34 @@ global_filters:
   priority_condition: vCPUs
 
 contracts: 
-  # machine_1: 
-  #   priority: 0
-  #   image: pytorch/pytorch
-  #   disk: 32
-  #   duration: 30
-  #   task: jupyter_lab
-  machine_1: 
+
+  Machine1: 
     priority: 0
     image: pytorch/pytorch
     disk: 32
+    task: jupyter_lab
     duration: 3000
     tunnel_port: 8888
     local_port: 8888
-    task: jupyter_lab
     start_command: ls
     end_command: uptime
+    input_storage: "@relative_path/storage/input/Mch1" 
+    output_storage: "@relative_path/storage/output/Mch1" 
 
-  machine_2: 
+  Machine2: 
     priority: 1
     image: pytorch/pytorch
     disk: 32
-    duration: 3000
-    tunnel_port: 8888
-    local_port: 8888
     task: jupyter_lab
+    duration: 3000
+    tunnel_port: 8889
+    local_port: 8889
     start_command: ls
-    end_command: uptime      
+    end_command: uptime
+    input_storage: "@relative_path/storage/input/Mch2" 
+    output_storage: "@relative_path/storage/output/Mch2" 
 
+   
 
-  # machine_2: 
-  #   priority: 0
-  #   image: pytorch/pytorch
-  #   disk: 32
-  #   duration: 3000
-  #   tunnel_port: 8889
-  #   local_port: 8889
-  #   task: jupyter_lab
-    # start_command: ls
-    # end_command: uptime
 
       

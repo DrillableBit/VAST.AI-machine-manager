@@ -68,9 +68,13 @@ def lifecycle(assignments_file):
         for machine, details in assignments.items():
             contract_id = rent_machine(details, script_dir, active_contracts_file)
             if contract_id:
+                details['contract_id'] = contract_id
                 futures.append(executor.submit(autoclose_machine, contract_id, details['duration'], script_dir, active_contracts_file))
                 futures.append(executor.submit(manage_machine, contract_id, details))
-
+        # Write updated assignments with Contract IDs back to the file
+        with open(assignments_file, 'w') as file:
+            json.dump(assignments, file, indent=4)
+            
         for future in as_completed(futures):
             try:
                 future.result()
