@@ -13,23 +13,15 @@ from run_machine.commands.end_command_manager import run_end_command_manager
 from run_machine.tasks.task_manager import run_task_manager
 from run_machine.command_logger import log_command
 from run_machine.initiate_ssh_tunnel import initiate_ssh_tunnel
+from run_machine.get_ssh_url import get_ssh_url
 
-def get_ssh_url(contract_id, retries=3, delay=5):
-    for attempt in range(retries):
-        try:
-            result = subprocess.run(f"vastai ssh-url {contract_id}", shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            ssh_url = result.stdout.decode('utf-8').strip()
-            if ssh_url:
-                return ssh_url
-        except subprocess.CalledProcessError as e:
-            print(f"Attempt {attempt + 1} to get SSH URL for contract ID {contract_id} failed with error:\n{e.stderr.decode('utf-8')}")
-        
-        print(f"Retrying in {delay} seconds...")
-        time.sleep(delay)
-    
-    print(f"Failed to get SSH URL for contract ID {contract_id} after {retries} attempts.")
-    return None
 
+def adjust_path(path):
+    if path.startswith('@relative_path/'):
+        script_dir = os.path.dirname(os.path.realpath(__file__))
+        adjusted_path = os.path.join(script_dir, '..', path.replace('@relative_path/', ''))
+        return os.path.abspath(adjusted_path)
+    return path
 
 def wait_for_ssh_connection(contract_id, ssh_url, timeout=300, interval=10):
     user, host, port = parse_ssh_url(ssh_url)
@@ -77,7 +69,8 @@ def manage_machine(contract_id, details):
         end_command = details.get('end_command')
         tunnel_port = details.get('tunnel_port')
         local_port = details.get('local_port', tunnel_port)
-        
+        input_storage_path = details.get('input_storage')
+        user, host, port = parse_ssh_url(ssh_url)
         if not wait_for_ssh_connection(contract_id, ssh_url):
             print(f"Could not establish SSH connection for contract ID {contract_id}. Exiting...")
             log_command(contract_id=contract_id,command="SSH",output="Unable to establish SSH connection.")
@@ -85,8 +78,18 @@ def manage_machine(contract_id, details):
             
         log_command(contract_id=contract_id,command="SSH",output="Sucessfully established SSH connection.")
 
+
+
+        if input_storage_path:
+            print(f"Copying input_storage to remote for contract ID {contract_id}")
+            script_dir = os.path.dirname(os.path.realpath(__file__))
+            input_storage_path = adjust_path(input_storage_path) 
+            sync_script = os.path.join(script_dir, 'sync_storage_scp.py')
+            scp_to_command = f"python3 {sync_script} {contract_id} {user} {host} {port} {input_storage_path} to"
+            subprocess.run(scp_to_command, shell=True, check=True)
+
         if tunnel_port:
-            user, host, port = parse_ssh_url(ssh_url)
+            # user, host, port = parse_ssh_url(ssh_url)
             log_command(contract_id=contract_id,command="SSH",output=f"Establishing SSH tunnel from local port {local_port} to remote port {tunnel_port}")
             print(f"Establishing SSH tunnel from local port {local_port} to remote port {tunnel_port}")
             initiate_ssh_tunnel(contract_id, user, host, port, tunnel_port, local_port)

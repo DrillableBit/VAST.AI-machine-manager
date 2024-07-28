@@ -1,13 +1,11 @@
 #!/bin/bash
 
 # List of headers to filter
-headers=("ID" "CUDA" "N" "Model" "PCIE" "cpu_ghz" "vCPUs" "RAM" "Disk" "\$/hr" "DLP" "DLP/\$" "score" "NV Driver" "Net_up" "Net_down" "R" "Max_Days" "mach_id" "status" "ports" "country")
+headers=("ID" "CUDA" "N" "Model" "PCIE" "cpu_ghz" "vCPUs" "RAM" "Disk" "\$/hr" "DLP" "DLP/\$" "score" "NV_Driver" "Net_up" "Net_down" "R" "Max_Days" "mach_id" "status" "ports" "country")
 
 # Function to search for machine ID in vastai search offers result
 search_machine_id_in_vastai() {
     local machine_id=$1
-    local json_file=$2
-    local add_comma=$3
 
     # Fetch the result from vastai
     result=$(vastai search offers "machine_id = $machine_id verified = any")
@@ -55,20 +53,11 @@ search_machine_id_in_vastai() {
         json_data="${json_data%, }"
         json_data+="}"
 
-        # Append the result to the JSON file
-        if [ "$add_comma" = true ]; then
-            echo "," >> "$json_file"
-        fi
-        echo "$json_data" >> "$json_file"
-
-        # Set add_comma to true after the first entry
-        add_comma=true
-        echo $machine_id is available.
+        echo "$json_data"
     else
-        echo "No result found for machine_id $machine_id."
+        echo ""
     fi
 }
-
 
 # Determine the directory of the current script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -82,10 +71,18 @@ json_file="$SCRIPT_DIR/results.json"
 echo "[" > "$json_file"
 
 # Read each machine_id from the file and call the function
-add_comma=false
+first_entry=true
 while IFS= read -r machine_id; do
-    search_machine_id_in_vastai "$machine_id" "$json_file" $add_comma
-    add_comma=true
+    echo "Processing machine_id: $machine_id"  # Debug statement
+    json_data=$(search_machine_id_in_vastai "$machine_id")
+    if [ "$json_data" != "" ]; then
+        if [ "$first_entry" = true ]; then
+            first_entry=false
+        else
+            echo "," >> "$json_file"
+        fi
+        echo "$json_data" >> "$json_file"
+    fi
 done < "$machine_file"
 
 # Finalize the JSON array
@@ -93,3 +90,6 @@ echo "]" >> "$json_file"
 
 # Format JSON file using jq
 jq '.' "$json_file" > tmp.$$.json && mv tmp.$$.json "$json_file"
+
+# Print final json_file content for debugging
+cat "$json_file"
