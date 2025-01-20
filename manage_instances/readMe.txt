@@ -1,62 +1,103 @@
-VAST.AI host machine manager
+# VAST.AI Host Machine Manager
 
-Add your machine ids to my_machines.txt
-Set up the desired commands and tasks in config.yaml
-create optional custom tasks in run_machine/tasks/tasklist
+Manage your VAST.AI host machines with ease. Automate renting, running commands, and managing tasks on multiple machines through a simple configuration.
 
-Setup ________________________________________________
-  *** Remember to set up ssh keys and vastai api key ***
-  Run: 
-  chmod +x run.sh
-  chmod +x exit.sh
+---
 
+## 📋 Setup Instructions
 
-Commands  ____________________________________________
-./run.sh rents all your machines, then executes commands set up in config.yaml
-it then autocancels the contracts after the duration, if a duration is set. 
+1. **Add your machine IDs**:
+   - Populate the `my_machines.txt` file with your VAST.AI machine IDs.
 
-sanitizing
-exit.sh can be used if you had to cancel the run.sh script, and want to force exit out of all contracts. 
+2. **Configure commands and tasks**:
+   - Define your desired setup in `config.yaml`.
 
-logs and results are available at logs - sorted by the contract ID
-customize tasks through /run_machine/tasks/tasklist   
-- add a file with the tasklist.
-- assign the file through adding the filename to your yaml "task: "
+3. **(Optional)**: Create custom tasks.
+   - Add your custom tasks to `/run_machine/tasks/tasklist`.
 
+4. **Setup SSH keys and VAST.AI API key**:
+   - Ensure your keys are set up properly.
 
+5. **Set executable permissions**:
+   ```bash
+   chmod +x run.sh
+   chmod +x exit.sh
+---
 
+## 🚀 Commands
 
-Yaml config:
+### `./run.sh`
+- **Purpose**: Rents all your machines, executes the commands in `config.yaml`, and optionally cancels contracts after the set duration.
 
-global_filters:                               - Filters the machine search for the desired specifications.  
-  min_cuda: 12.2
-  max_cuda: 12.2
-  min_nv_driver: 535
-  max_nv_driver: 535
-  min_vCPU: 5
-  max_vCPU: 60
-  priority_condition: vCPUs                  - Feature to sort for when assigning priority. 
+### `./exit.sh`
+- **Purpose**: Cancels all active contracts forcibly.
+- **Use case**: Useful when you need to stop processes manually or if `run.sh` was interrupted.
 
-contracts: 
-   machine_1:                               - Name your machines anything.
-     priority: 0                            - priority assigns resources based on priority. Lower priority = better machine based on priority_condition. 
-     image: pytorch/pytorch                 - vast docker container to base the machine on.
-     disk: 32                               - assigned diskspace (GB)
-     duration: 30                           - seconds the machine will be kept alive
-     tunnel_port: 8888                      - set up a ssh tunnel - defaults local port to same as tunnel port. 
-     local_port: 8888                       - optional local port mapping
-     start_command: ls                      - run start command (optional)
-     task: jupyter_lab                      - copy over and run a task file (optional) 
-     end_command: uptime                    - run end command (optional)
+---
 
-  machine_2: 
-     priority: 0
-     image: pytorch/pytorch
-     disk: 32
-     duration: 3000
-     task: jupyter_lab
-     start_command: whoami
-     end_command: ls
-=======
-./exit.sh can be used if you had to cancel the run.sh script, and want to force exit out of all contracts. 
+## 📂 Logs & Results
 
+- Logs and results are stored in the `logs` directory.
+- Logs are sorted by contract ID for easy navigation.
+
+---
+
+## 🛠️ Customizing Tasks
+
+1. **Add a custom task file**:
+   - Add a file containing your custom tasklist in `/run_machine/tasks/tasklist`.
+
+2. **Assign the task file**:
+   - Specify the filename in the `task` key of your `config.yaml`.
+
+---
+
+## ⚙️ YAML Configuration
+
+Define machine filters and contract-specific settings in `config.yaml`.
+
+### Global Filters
+Customize machine searches using the following parameters:
+```yaml
+global_filters:
+  min_cuda: 12.2           # Minimum CUDA version
+  max_cuda: 12.2           # Maximum CUDA version
+  min_nv_driver: 535       # Minimum NVIDIA driver version
+  max_nv_driver: 535       # Maximum NVIDIA driver version
+  min_vCPU: 5              # Minimum virtual CPUs
+  max_vCPU: 60             # Maximum virtual CPUs
+  priority_condition: vCPUs # Criteria for assigning priority
+```
+### Contracts
+Define settings for individual machines in `config.yaml`:
+
+```yaml
+contracts:
+  machine_1:                   # Assign a name to your machine
+    priority: 0                # Lower priority = better match based on priority_condition
+    image: pytorch/pytorch     # VAST.AI Docker container
+    disk: 32                   # Disk space in GB
+    duration: 30               # Time (in seconds) to keep the machine alive
+    tunnel_port: 8888          # SSH tunnel port
+    local_port: 8888           # Optional local port mapping
+    start_command: ls          # Command to run at the start (optional)
+    task: jupyter_lab          # Task file to execute (optional)
+    end_command: uptime        # Command to run at the end (optional)
+
+  machine_2:                   # Define additional machines as needed
+    priority: 0
+    image: pytorch/pytorch
+    disk: 32
+    duration: 3000
+    start_command: whoami
+    task: jupyter_lab
+    end_command: ls
+```
+---
+
+## 🧹 Cleaning Up
+
+Use the following command to forcibly cancel all active contracts:
+```bash
+./exit.sh
+```
