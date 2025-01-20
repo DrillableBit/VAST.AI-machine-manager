@@ -68,7 +68,6 @@ global_filters:
   min_vCPU: 5              # Minimum virtual CPUs
   max_vCPU: 60             # Maximum virtual CPUs
   priority_condition: vCPUs # Criteria for assigning priority
-./exit.sh
 
 ### Contracts
 Define settings for individual machines in `config.yaml`:
