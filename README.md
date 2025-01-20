@@ -67,7 +67,7 @@ global_filters:
   min_vCPU: 5              # Minimum virtual CPUs
   max_vCPU: 60             # Maximum virtual CPUs
   priority_condition: vCPUs # Criteria for assigning priority
-
+```
 ### Contracts
 Define settings for individual machines in `config.yaml`:
 
@@ -92,7 +92,7 @@ contracts:
     start_command: whoami
     task: jupyter_lab
     end_command: ls
-
+```
 ---
 
 ## 🧹 Cleaning Up
@@ -100,3 +100,4 @@ contracts:
 Use the following command to forcibly cancel all active contracts:
 ```bash
 ./exit.sh
+```
