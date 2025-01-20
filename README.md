@@ -28,7 +28,6 @@ Manage your VAST.AI host machines with ease. Automate renting, running commands,
 
 ### `./run.sh`
 - **Purpose**: Rents all your machines, executes the commands in `config.yaml`, and optionally cancels contracts after the set duration.
-- **Auto-cancellation**: If a duration is specified in `config.yaml`, contracts are automatically canceled after completion.
 
 ### `./exit.sh`
 - **Purpose**: Cancels all active contracts forcibly.
